@@ -24,4 +24,21 @@ feature 'Manage tasks', js: true do
 
     expect( page.find(:css, 'span#todo-count').text ).to eq "0"
   end
+
+  scenario 'advanced todo management' do
+    fill_in 'todo_title', with: 'Be Spiderman'
+    page.execute_script("$('form').submit()")
+
+    fill_in 'todo_title', with: 'Be Batwoman'
+    page.execute_script("$('form').submit()")
+
+    check('todo-1')
+    check('todo-2')
+
+    sleep(1) # Wait for 1 second so counters can be updated
+
+    expect( page.find(:css, 'span#todo-count').text ).to eq "1"
+    expect( page.find(:css, 'span#completed-count').text ).to eq "2"
+    expect( page.find(:css, 'span#total-count').text ).to eq "3"
+  end
 end

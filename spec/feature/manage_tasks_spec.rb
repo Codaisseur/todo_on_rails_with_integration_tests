@@ -25,4 +25,17 @@ feature 'Manage tasks', js: true do
 
     expect( page.find(:css, 'span#todo-count').text ).to eq "1"
   end
+
+  scenario 'complete a task' do
+    visit todos_path
+    fill_in 'todo_title', with: 'go to candy mountain'
+    page.execute_script("$('form').submit()")
+
+    check('todo-1')
+
+    # Wait for 1 second so the counter can be updated
+    sleep(1)
+
+    expect( page.find(:css, 'span#todo-count').text ).to eq "0"
+  end
 end
